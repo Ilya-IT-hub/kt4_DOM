@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #cardForm {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    #cardForm input[type="text"],
+    #cardForm input[type="number"],
+    #cardForm select {
+      margin-right: 10px;
+    }
+
+    #cardForm img {
+      max-width: 100px;
+      max-height: 60px;
+      margin-left: 10px;
+    }
+
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <form id="cardForm">
+    <input type="text" id="bankName" placeholder="Название банка" required>
+    <select id="paymentSystem" required>
+      <option value="visa">Visa</option>
+      <option value="mastercard">Mastercard</option>
+      <option value="amex">American Express</option>
+    </select>
+    <input type="number" id="cardNumber" placeholder="Номер карты (16 цифр)" pattern="\d{16}" required>
+    <input type="text" id="cardHolder" placeholder="Имя держателя карты" required>
+    <input type="number" id="expiryMonth" placeholder="Месяц окончания" min="1" max="12" required>
+    <input type="number" id="expiryYear" placeholder="Год окончания" min="2023" required>
+    <button type="submit">Добавить карту</button>
+    <img id="cardLogo" src="" alt="Миниатюра банковской карты">
+  </form>
+
+  <table id="cardTable">
+    <thead>
+      <tr>
+        <th>Банк</th>
+        <th>Платежная система</th>
+        <th>Номер карты</th>
+        <th>Держатель карты</th>
+        <th>Окончание</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('cardForm');
+    const cardLogo = document.getElementById('cardLogo');
+    const cardTable = document.getElementById('cardTable').getElementsByTagName('tbody')[0];
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const bankName = document.getElementById('bankName').value;
+      const paymentSystem = document.getElementById('paymentSystem').value;
+      const cardNumber = document.getElementById('cardNumber').value;
+      const cardHolder = document.getElementById('cardHolder').value;
+      const expiryMonth = document.getElementById('expiryMonth').value;
+      const expiryYear = document.getElementById('expiryYear').value;
+
+      const newRow = cardTable.insertRow();
+      newRow.insertCell().textContent = bankName;
+      newRow.insertCell().textContent = paymentSystem;
+      newRow.insertCell().textContent = cardNumber;
+      newRow.insertCell().textContent = cardHolder;
+      newRow.insertCell().textContent = `${expiryMonth}/${expiryYear}`;
+
+      form.reset();
+
+      cardLogo.src = '';
+
+      if (paymentSystem === 'visa') {
+        cardLogo.src = 'visa_logo.png';
+      } else if (paymentSystem === 'mastercard') {
+        cardLogo.src = 'mastercard_logo.png';
+      } else if (paymentSystem === 'amex') {
+        cardLogo.src = 'amex_logo.png';
+      }
+    });
+  </script>
+</body>
+</html>
